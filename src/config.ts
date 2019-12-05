@@ -2,7 +2,7 @@ export const config = {
   auth: {
     domain: 'kozzztya.auth0.com',
     clientId: 'VBiA5zN49Ec0LmgJx4LTX9vq7xFIEPTq',
-    redirectUri: 'https://cycler.cc/',
+    redirectUri: 'https://www.cycler.cc/',
     responseType: 'token id_token',
     scope: 'openid',
     audience: 'cycler-api'
