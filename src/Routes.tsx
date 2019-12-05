@@ -1,14 +1,18 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Cycles } from './components/Cycles/Cycles';
+import { App } from './components/App/App';
 import { CycleForm } from './components/CycleForm/CycleForm';
 import { Iterations } from './components/Iterations/Iterations';
+import { Auth } from './components/Auth/Auth';
 
 export const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Cycles />
+        <App />
+      </Route>
+      <Route exact path="/auth">
+        <Auth />
       </Route>
       <Route path="/cycle/create">
         <CycleForm />

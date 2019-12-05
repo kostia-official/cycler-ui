@@ -13,6 +13,8 @@ import thunk from 'redux-thunk';
 import reducer from './reducers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
+import { Auth0Provider } from 'use-auth0-hooks';
+import { config } from './config';
 
 const middleware: Middleware[] = [thunk];
 if (process.env.NODE_ENV !== 'production') {
@@ -23,16 +25,18 @@ const store = createStore(reducer, applyMiddleware(...middleware));
 
 ReactDOM.render(
   <BrowserRouter>
-    <ReduxProvider store={store}>
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <ThemeProvider theme={theme()}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
+    <Auth0Provider {...config.auth}>
+      <ReduxProvider store={store}>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <ThemeProvider theme={theme()}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
 
-          <Routes />
-        </ThemeProvider>
-      </MuiPickersUtilsProvider>
-    </ReduxProvider>
+            <Routes />
+          </ThemeProvider>
+        </MuiPickersUtilsProvider>
+      </ReduxProvider>
+    </Auth0Provider>
   </BrowserRouter>,
   document.querySelector('#root')
 );
