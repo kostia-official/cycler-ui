@@ -7,5 +7,5 @@ export const config = {
     scope: 'openid',
     audience: 'cycler-api'
   },
-  apiUrl: 'http://localhost:3030'
+  apiUrl: 'https://ewc3w4owo3.execute-api.eu-west-1.amazonaws.com/prod'
 };

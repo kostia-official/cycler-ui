@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { ToolBar } from '../ToolBar/ToolBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,8 @@ import { fetchById } from '../../actions/cycle';
 import { DatePickerButton } from '../DatePickerButton/DatePickerButton';
 import { AddFabButton } from '../AddFabButton/AddFabButton';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { useIsKeyboardOpen } from '../../hooks/useIsKeyboardOpen';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(() => ({
   createOnDateButton: {
@@ -29,6 +31,9 @@ const useStyles = makeStyles(() => ({
   },
   listItem: {
     padding: '16px'
+  },
+  hidden: {
+    display: 'none'
   }
 }));
 
@@ -49,6 +54,8 @@ export const Iterations = () => {
   useEffect(() => {
     dispatch(fetchIterations(cycleId));
   }, [cycleId, dispatch]);
+
+  const isKeyboardOpen = useIsKeyboardOpen();
 
   const title = parentCycle?.name || 'Loading...';
 
@@ -73,11 +80,13 @@ export const Iterations = () => {
         </div>
       )}
 
-      <DatePickerButton
-        className={classes.createOnDateButton}
-        onChange={(date) => dispatch(createIteration(cycleId, parentCycle.periodicity, date))}
-      />
-      <AddFabButton onClick={() => dispatch(createIteration(cycleId, parentCycle.periodicity))} />
+      <div className={classNames({ [classes.hidden]: isKeyboardOpen })}>
+        <DatePickerButton
+          className={classes.createOnDateButton}
+          onChange={(date) => dispatch(createIteration(cycleId, parentCycle.periodicity, date))}
+        />
+        <AddFabButton onClick={() => dispatch(createIteration(cycleId, parentCycle.periodicity))} />
+      </div>
 
       <ErrorMessage error={errorMessage} />
 
