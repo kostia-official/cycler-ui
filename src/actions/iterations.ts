@@ -18,9 +18,7 @@ export enum IterationsActions {
   RemoveSuccessful = 'RemoveIterationSuccessful',
   RemoveFail = 'RemoveIterationFail',
   RemoveClick = 'RemoveIterationClick',
-  RemoveUndo = 'RemoveIterationUndo',
-
-  OnErrorClose = 'OnIterationsErrorClose'
+  RemoveUndo = 'RemoveIterationUndo'
 }
 
 export const createIteration = (cycleId: string, periodicity: string, date?: Date) => async (

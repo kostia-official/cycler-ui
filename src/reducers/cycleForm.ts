@@ -1,6 +1,7 @@
 import { CycleActions as Actions } from '../actions/cycle';
 import _ from 'lodash';
 import { combineReducers } from 'redux';
+import { getErrorMessage } from '../helpers/getErrorMessage';
 
 const emptyFieldTemplate = {
   name: '',
@@ -55,15 +56,12 @@ const data = (state = emptyCycle, action: any) => {
 const meta = (state = { isLoading: false, errorMessage: '' }, action: any) => {
   switch (action.type) {
     case Actions.UpsertStart:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, errorMessage: '' };
     case Actions.UpsertSuccessful:
       return { ...state, isLoading: false };
     case Actions.FetchByIdFail:
     case Actions.UpsertFail:
-      const errorMessage = action.err.response.data?.message || action.err.message;
-      return { ...state, isLoading: false, errorMessage };
-    case Actions.OnErrorClose:
-      return { ...state, errorMessage: '' };
+      return { ...state, isLoading: false, errorMessage: getErrorMessage(action.err) };
     default:
       return state;
   }

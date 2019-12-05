@@ -2,6 +2,7 @@ import { CyclesActions as Actions } from '../actions/cycles';
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { ICycle } from '../data.types';
+import { getErrorMessage } from '../helpers/getErrorMessage';
 
 const data = (state: any[] = [], action: any) => {
   switch (action.type) {
@@ -26,21 +27,17 @@ const meta = (
 ) => {
   switch (action.type) {
     case Actions.FetchStart:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, errorMessage: '' };
     case Actions.FetchSuccessful:
       return { ...state, isLoading: false };
     case Actions.FetchFail:
-      const errorMessage = action.err.response.data?.message || action.err.message;
-      return { ...state, isLoading: false, errorMessage };
+      return { ...state, isLoading: false, errorMessage: getErrorMessage(action.err) };
 
     case Actions.RemoveClick:
       return { ...state, toRemove: [...state.toRemove, action.toRemove] };
     case Actions.RemoveSuccessful:
     case Actions.RemoveUndo:
       return { ...state, toRemove: _.reject(state.toRemove, { _id: action._id }) };
-
-    case Actions.OnErrorClose:
-      return { ...state, errorMessage: '' };
 
     default:
       return state;

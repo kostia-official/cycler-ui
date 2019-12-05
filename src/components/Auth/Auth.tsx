@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, makeStyles, Snackbar, SnackbarContent } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import { config } from '../../config';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Spinner } from '../Spinner/Spinner';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,7 +23,7 @@ export const Auth = () => {
   const classes = useStyles();
   const location = useLocation();
   const query = queryString.parse(location.search);
-  const error = query?.error_description;
+  const error = query?.error_description || '';
   const { login, isLoading } = useAuth();
 
   if (isLoading) return <Spinner />;
@@ -34,11 +35,7 @@ export const Auth = () => {
           Login
         </Button>
       </div>
-      {error && (
-        <Snackbar open={!!error}>
-          <SnackbarContent className={classes.snackbarContent} message={<span>{error}</span>} />
-        </Snackbar>
-      )}
+      <ErrorMessage error={String(error)} />
     </div>
   );
 };

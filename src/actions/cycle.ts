@@ -17,9 +17,7 @@ export enum CycleActions {
   AddFieldTemplate = 'AddFieldTemplate',
 
   OnChangeFieldTemplate = 'OnChangeFieldTemplate',
-  OnChange = 'OnCycleChange',
-
-  OnErrorClose = 'OnCycleErrorClose'
+  OnChange = 'OnCycleChange'
 }
 
 export const fetchById = (cycleId: string) => async (dispatch: Dispatch) => {
@@ -49,10 +47,6 @@ export const upsert = (cycle: ICyclePopulated) => async (dispatch: Dispatch) => 
 export const removeFieldTemplate = (index: string) => ({
   type: CycleActions.RemoveFieldTemplate,
   index
-});
-
-export const onErrorClose = () => ({
-  type: CycleActions.OnErrorClose
 });
 
 export const addFieldTemplate = () => ({

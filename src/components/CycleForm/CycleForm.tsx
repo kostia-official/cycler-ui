@@ -1,32 +1,32 @@
 import React, { useEffect } from 'react';
 import {
   Button,
-  TextField,
   Container,
-  makeStyles,
   FormControl,
-  FormLabel,
-  RadioGroup,
   FormControlLabel,
-  Radio
+  FormLabel,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  TextField
 } from '@material-ui/core';
 import { ToolBar } from '../ToolBar/ToolBar';
 import { FieldTemplateForm } from './FieldTemplateForm/FieldTemplateForm';
 import _ from 'lodash';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  onChange,
-  removeFieldTemplate,
   addFieldTemplate,
+  fetchById,
+  onChange,
   onChangeFieldTemplate,
-  upsert,
-  onErrorClose,
-  fetchById
+  removeFieldTemplate,
+  upsert
 } from '../../actions/cycle';
 import { fetch } from '../../actions/cycles';
 import AddIcon from '@material-ui/icons/Add';
 import { SaveFabButton } from '../SaveFabButton/SaveFabButton';
 import { useHistory, useParams } from 'react-router';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2)
+  },
+  snackbar: {
+    [theme.breakpoints.down('xs')]: {
+      bottom: 90
+    }
   }
 }));
 
@@ -49,6 +54,8 @@ export const CycleForm = () => {
   const cycle = useSelector((state: any) => state.cycleForm.data);
   const { isLoading, errorMessage } = useSelector((state: any) => state.cycleForm.meta);
   const { cycleId = '' } = useParams();
+
+  console.log(errorMessage);
 
   const isEditMode = !!cycleId;
   const title = isEditMode ? `Edit Cycle "${cycle.name}"` : 'New Cycle';
@@ -120,9 +127,7 @@ export const CycleForm = () => {
         </Button>
 
         <SaveFabButton
-
           isLoading={isLoading}
-          errorMessage={errorMessage}
           onClick={async () => {
             const res: any = await dispatch(upsert(cycle));
             if (!res.err) {
@@ -130,8 +135,9 @@ export const CycleForm = () => {
               history.push('/');
             }
           }}
-          onErrorClose={() => dispatch(onErrorClose())}
         />
+
+        <ErrorMessage error={errorMessage} />
       </Container>
     </div>
   );

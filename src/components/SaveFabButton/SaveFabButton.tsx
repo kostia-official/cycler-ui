@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fab, makeStyles, Snackbar, SnackbarContent } from '@material-ui/core';
+import { Fab, makeStyles } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
@@ -20,30 +20,15 @@ const useStyles = makeStyles((theme) => ({
   wrapper: {
     margin: theme.spacing(1),
     position: 'relative'
-  },
-  snackbar: {
-    [theme.breakpoints.down('xs')]: {
-      bottom: 90
-    }
-  },
-  snackbarContent: {
-    backgroundColor: theme.palette.error.dark
   }
 }));
 
 interface ISaveFabButtonProps {
   isLoading: boolean;
   onClick: (event: any) => any;
-  onErrorClose: (event: any) => any;
-  errorMessage: string;
 }
 
-export const SaveFabButton: React.FC<ISaveFabButtonProps> = ({
-  isLoading,
-  onClick,
-  errorMessage,
-  onErrorClose
-}) => {
+export const SaveFabButton: React.FC<ISaveFabButtonProps> = ({ isLoading, onClick }) => {
   const classes = useStyles();
 
   return (
@@ -59,18 +44,6 @@ export const SaveFabButton: React.FC<ISaveFabButtonProps> = ({
         </Fab>
         {isLoading && <CircularProgress size={68} className={classes.fabProgress} />}
       </div>
-
-      <Snackbar
-        open={!!errorMessage}
-        onClose={onErrorClose}
-        autoHideDuration={5000}
-        className={classes.snackbar}
-      >
-        <SnackbarContent
-          className={classes.snackbarContent}
-          message={<span>{errorMessage}</span>}
-        />
-      </Snackbar>
     </>
   );
 };

@@ -11,12 +11,13 @@ import { setParentCycle } from '../../actions/iterations';
 import { setToEdit } from '../../actions/cycle';
 import { Cycle } from './Cycle/Cycle';
 import { AddFabButton } from '../AddFabButton/AddFabButton';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 export const Cycles = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector((state: any) => state.cycles.data);
-  const { isLoading, toRemove } = useSelector((state: any) => state.cycles.meta);
+  const { isLoading, toRemove, errorMessage } = useSelector((state: any) => state.cycles.meta);
 
   useEffect(() => {
     dispatch(fetch());
@@ -50,6 +51,8 @@ export const Cycles = () => {
       )}
 
       <AddFabButton onClick={() => history.push('/cycle/create')} />
+
+      <ErrorMessage error={errorMessage} />
 
       {_.map(toRemove, ({ _id, name }) => (
         <RemoveSnackbar

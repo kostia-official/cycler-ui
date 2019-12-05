@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import _ from 'lodash';
 import { ICyclePopulated, IIterationPopulated } from '../data.types';
 import { CycleActions } from '../actions/cycle';
+import { getErrorMessage } from '../helpers/getErrorMessage';
 
 const data = (state: IIterationPopulated[] = [], action: any) => {
   switch (action.type) {
@@ -39,22 +40,18 @@ const meta = (
 ) => {
   switch (action.type) {
     case IterationsActions.FetchIterationsStart:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, errorMessage: '' };
     case IterationsActions.FetchIterationsSuccessful:
       return { ...state, isLoading: false };
     case IterationsActions.FetchIterationsFail:
     case CycleActions.FetchByIdFail:
-      const errorMessage = action.err.response.data?.message || action.err.message;
-      return { ...state, isLoading: false, errorMessage };
+      return { ...state, isLoading: false, errorMessage: getErrorMessage(action.err) };
 
     case IterationsActions.RemoveClick:
       return { ...state, toRemove: [...state.toRemove, action.iteration] };
     case IterationsActions.RemoveUndo:
     case IterationsActions.RemoveSuccessful:
       return { ...state, toRemove: _.reject(state.toRemove, { _id: action.iteration._id }) };
-
-    case IterationsActions.OnErrorClose:
-      return { ...state, errorMessage: '' };
 
     default:
       return state;

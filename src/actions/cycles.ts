@@ -11,9 +11,7 @@ export enum CyclesActions {
   RemoveSuccessful = 'CyclesRemoveSuccessful',
   RemoveFail = 'CyclesRemoveFail',
   RemoveClick = 'CyclesRemoveClick',
-  RemoveUndo = 'CyclesRemoveUndo',
-
-  OnErrorClose = 'OnCyclesErrorClose'
+  RemoveUndo = 'CyclesRemoveUndo'
 }
 
 export const fetch = () => async (dispatch: Dispatch) => {
@@ -49,8 +47,4 @@ export const removeClick = (toRemove: ICycle) => ({
 export const removeUndo = (_id: string) => ({
   type: CyclesActions.RemoveUndo,
   _id
-});
-
-export const onErrorClose = () => ({
-  type: CyclesActions.OnErrorClose
 });
