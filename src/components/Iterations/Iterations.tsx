@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { Fab, makeStyles } from '@material-ui/core';
-import { ToolBar } from '../ToolBar/ToolBar';
-import { useDispatch, useSelector } from 'react-redux';
-import AddIcon from '@material-ui/icons/Add';
-import { useParams } from 'react-router';
+import React, {useEffect} from 'react';
+import {makeStyles} from '@material-ui/core';
+import {ToolBar} from '../ToolBar/ToolBar';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router';
 import {
   createIteration,
   fetchIterations,
@@ -12,23 +11,19 @@ import {
   removeIterationUndo
 } from '../../actions/iterations';
 import _ from 'lodash';
-import { Spinner } from '../Spinner/Spinner';
-import { Iteration } from './Iteration/Iteration';
-import { RemoveSnackbar } from '../RemoveSnackbar/RemoveSnackbar';
+import {Spinner} from '../Spinner/Spinner';
+import {Iteration} from './Iteration/Iteration';
+import {RemoveSnackbar} from '../RemoveSnackbar/RemoveSnackbar';
 import moment from 'moment';
-import { upsertField } from '../../actions/field';
-import { fetchById } from '../../actions/cycle';
-import { DatePickerButton } from '../DatePickerButton/DatePickerButton';
+import {upsertField} from '../../actions/field';
+import {fetchById} from '../../actions/cycle';
+import {DatePickerButton} from '../DatePickerButton/DatePickerButton';
+import {AddFabButton} from '../AddFabButton/AddFabButton';
 
 const useStyles = makeStyles(() => ({
   createOnDateButton: {
     position: 'fixed',
     bottom: '90px',
-    right: '16px'
-  },
-  createCurrentButton: {
-    position: 'fixed',
-    bottom: '16px',
     right: '16px'
   },
   listItem: {
@@ -81,16 +76,7 @@ export const Iterations = () => {
         className={classes.createOnDateButton}
         onChange={(date) => dispatch(createIteration(cycleId, parentCycle.periodicity, date))}
       />
-
-      <Fab
-        className={classes.createCurrentButton}
-        color="primary"
-        onClick={async () => {
-          await dispatch(createIteration(cycleId, parentCycle.periodicity));
-        }}
-      >
-        <AddIcon />
-      </Fab>
+      <AddFabButton onClick={() => dispatch(createIteration(cycleId, parentCycle.periodicity))} />
 
       {_.map(toRemove, (iterationToRemove) => (
         <RemoveSnackbar

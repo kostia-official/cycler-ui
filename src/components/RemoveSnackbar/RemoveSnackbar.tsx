@@ -1,5 +1,5 @@
 import { Button, createStyles, IconButton, makeStyles, Snackbar, Theme } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import { duration } from '@material-ui/core/styles';
 

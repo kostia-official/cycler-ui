@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { Button, List, makeStyles } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { List } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import { ToolBar } from '../ToolBar/ToolBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetch, remove, removeClick, removeUndo } from '../../actions/cycles';
 import _ from 'lodash';
-import { MenuButton } from '../ToolBar/MenuButton/MenuButton';
 import { Spinner } from '../Spinner/Spinner';
 import { RemoveSnackbar } from '../RemoveSnackbar/RemoveSnackbar';
 import { setParentCycle } from '../../actions/iterations';
 import { setToEdit } from '../../actions/cycle';
 import { Cycle } from './Cycle/Cycle';
+import { AddFabButton } from '../AddFabButton/AddFabButton';
 
 export const Cycles = () => {
   const dispatch = useDispatch();
@@ -24,11 +24,7 @@ export const Cycles = () => {
 
   return (
     <>
-      <ToolBar title="Cycler">
-        <Button id="new-cycle" color="inherit" component={Link} to="/cycle/create">
-          New cycle
-        </Button>
-      </ToolBar>
+      <ToolBar title="Cycler" />
 
       {isLoading ? (
         <Spinner />
@@ -52,6 +48,8 @@ export const Cycles = () => {
           ))}
         </List>
       )}
+
+      <AddFabButton onClick={() => history.push('/cycle/create')} />
 
       {_.map(toRemove, ({ _id, name }) => (
         <RemoveSnackbar
