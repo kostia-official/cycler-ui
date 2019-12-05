@@ -40,7 +40,7 @@ export const Cycle: React.FC<ICycleProps> = ({
       onClick={onClick}
     >
       <ListItemText primary={cycle.name} />
-      <ListItemSecondaryAction>
+      <ListItemSecondaryAction className={cn({ [classes.hidden]: isHidden })}>
         <IconButton edge="end" aria-label="edit" onClick={onEditClick}>
           <EditIcon />
         </IconButton>
