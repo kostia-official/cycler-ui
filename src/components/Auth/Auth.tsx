@@ -4,6 +4,7 @@ import { config } from '../../config';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import { Spinner } from '../Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,7 +23,9 @@ export const Auth = () => {
   const location = useLocation();
   const query = queryString.parse(location.search);
   const error = query?.error_description;
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div>
