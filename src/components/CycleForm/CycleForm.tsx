@@ -55,8 +55,6 @@ export const CycleForm = () => {
   const { isLoading, errorMessage } = useSelector((state: any) => state.cycleForm.meta);
   const { cycleId = '' } = useParams();
 
-  console.log(errorMessage);
-
   const isEditMode = !!cycleId;
   const title = isEditMode ? `Edit Cycle "${cycle.name}"` : 'New Cycle';
 
