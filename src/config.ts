@@ -9,3 +9,5 @@ export const config = {
   },
   apiUrl: process.env.REACT_APP_API_URL as string
 };
+
+console.log(config);
