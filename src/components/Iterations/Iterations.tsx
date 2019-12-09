@@ -21,7 +21,7 @@ import { DatePickerButton } from '../DatePickerButton/DatePickerButton';
 import { AddFabButton } from '../AddFabButton/AddFabButton';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { useIsKeyboardOpen } from '../../hooks/useIsKeyboardOpen';
-import classNames from 'classnames';
+import cn from 'classnames';
 
 const useStyles = makeStyles(() => ({
   createOnDateButton: {
@@ -42,8 +42,7 @@ export const Iterations = () => {
   const dispatch = useDispatch();
 
   const { isLoading, toRemove, errorMessage } = useSelector((state: any) => state.iterations.meta);
-  const parentCycle = useSelector((state: any) => state.iterations.parentCycle);
-  const data = useSelector((state: any) => state.iterations.data);
+  const { parentCycle, iterations } = useSelector((state: any) => state.iterations.data);
 
   const { cycleId = '' } = useParams();
 
@@ -67,7 +66,7 @@ export const Iterations = () => {
         <Spinner />
       ) : (
         <div>
-          {_.map(data, (item) => (
+          {_.map(iterations, (item) => (
             <Iteration
               key={item._id}
               iteration={item}
@@ -80,12 +79,12 @@ export const Iterations = () => {
         </div>
       )}
 
-      <div className={classNames({ [classes.hidden]: isKeyboardOpen })}>
+      <div className={cn({ [classes.hidden]: isKeyboardOpen })}>
         <DatePickerButton
           className={classes.createOnDateButton}
-          onChange={(date) => dispatch(createIteration(cycleId, parentCycle.periodicity, date))}
+          onChange={(date) => dispatch(createIteration(cycleId, parentCycle, date))}
         />
-        <AddFabButton onClick={() => dispatch(createIteration(cycleId, parentCycle.periodicity))} />
+        <AddFabButton onClick={() => dispatch(createIteration(cycleId, parentCycle))} />
       </div>
 
       <ErrorMessage error={errorMessage} />

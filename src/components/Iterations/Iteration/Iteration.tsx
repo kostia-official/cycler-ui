@@ -55,12 +55,11 @@ export const Iteration: React.FC<IIterationProps> = ({
       />
       <CardContent classes={{ root: classes.fields }}>
         {_.map(parentCycle?.fieldsTemplates, (fieldTemplate) => {
-          const field: Partial<IField> = _.find(iteration.fields, {
+          const field = _.find(iteration.fields, {
             fieldTemplateId: fieldTemplate._id
-          }) || {
-            fieldTemplateId: fieldTemplate._id,
-            iterationId: iteration._id
-          };
+          });
+
+          if (!field) return;
 
           return (
             <WordsField

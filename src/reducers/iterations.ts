@@ -1,28 +1,54 @@
 import { IterationsActions } from '../actions/iterations';
+import { FieldActions } from '../actions/field';
 import { combineReducers } from 'redux';
 import _ from 'lodash';
 import { ICyclePopulated, IIterationPopulated } from '../data.types';
 import { CycleActions } from '../actions/cycle';
 import { getErrorMessage } from '../helpers/getErrorMessage';
 
-const data = (state: IIterationPopulated[] = [], action: any) => {
+interface IDataState {
+  parentCycle?: ICyclePopulated;
+  iterations: IIterationPopulated[];
+}
+
+const data = (state: IDataState = { iterations: [] }, action: any) => {
   switch (action.type) {
     case IterationsActions.FetchIterationsSuccessful:
-      return [...action.data];
+      return {
+        ...state,
+        iterations: _.map(action.data, (iteration: IIterationPopulated) => {
+          return {
+            ...iteration,
+            fields: generateFields(iteration, state.parentCycle)
+          };
+        })
+      };
     case IterationsActions.CreateIterationSuccessful:
-      return [action.data, ...state];
+      const newIteration = {
+        ...action.data,
+        fields: generateFields(action.data, state.parentCycle)
+      };
+      return { ...state, iterations: [newIteration, ...state.iterations] };
     case IterationsActions.RemoveSuccessful:
-      return _.reject(state, { _id: action.iteration._id });
-    default:
-      return state;
-  }
-};
+      return { ...state, iterations: _.reject(state.iterations, { _id: action.iteration._id }) };
+    case FieldActions.UpsertSuccessful:
+      return {
+        ...state,
+        iterations: _.map(state.iterations, (item) => {
+          const index = _.findIndex(item.fields, {
+            fieldTemplateId: action.data.fieldTemplateId,
+            iterationId: action.data.iterationId
+          });
 
-const parentCycle = (state: ICyclePopulated | null = null, action: any) => {
-  switch (action.type) {
+          if (index !== -1) {
+            item.fields[index] = action.data;
+          }
+          return item;
+        })
+      };
     case IterationsActions.SetParentCycle:
     case CycleActions.FetchByIdSuccessful:
-      return action.data;
+      return { ...state, parentCycle: action.data };
     default:
       return state;
   }
@@ -58,4 +84,19 @@ const meta = (
   }
 };
 
-export default combineReducers({ data, parentCycle, meta });
+function generateFields(iteration: IIterationPopulated, parentCycle?: ICyclePopulated) {
+  if (!parentCycle) return [];
+
+  return _.map(parentCycle.fieldsTemplates, (fieldTemplate) => {
+    return (
+      _.find(iteration.fields, {
+        fieldTemplateId: fieldTemplate._id
+      }) || {
+        fieldTemplateId: fieldTemplate._id,
+        iterationId: iteration._id
+      }
+    );
+  });
+}
+
+export default combineReducers({ data, meta });

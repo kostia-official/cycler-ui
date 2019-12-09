@@ -1,7 +1,8 @@
 import { api } from '../api';
 import { Dispatch } from 'redux';
 import moment from 'moment';
-import { IIterationPopulated } from '../data.types';
+import { ICyclePopulated, IIterationPopulated } from '../data.types';
+import _ from 'lodash';
 
 export enum IterationsActions {
   FetchIterationsStart = 'FetchIterationsStart',
@@ -21,16 +22,22 @@ export enum IterationsActions {
   RemoveUndo = 'RemoveIterationUndo'
 }
 
-export const createIteration = (cycleId: string, periodicity: string, date?: Date) => async (
-  dispatch: Dispatch
-) => {
+export const createIteration = (
+  cycleId: string,
+  parentCycle: ICyclePopulated,
+  date?: Date
+) => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: IterationsActions.CreateIterationStart });
 
     const currentDate = moment()
-      .startOf(periodicity as any)
+      .startOf(parentCycle.periodicity as any)
       .toISOString();
-    const { data } = await api.post('/iterations', { date: date || currentDate, cycleId });
+
+    const { data } = await api.post('/iterations', {
+      date: date || currentDate,
+      cycleId
+    });
 
     dispatch({ type: IterationsActions.CreateIterationSuccessful, data });
   } catch (err) {
