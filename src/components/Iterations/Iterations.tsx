@@ -47,12 +47,11 @@ export const Iterations = () => {
   const { cycleId = '' } = useParams();
 
   useEffect(() => {
-    if (!parentCycle) dispatch(fetchById(cycleId));
+    (async () => {
+      if (!parentCycle) await dispatch(fetchById(cycleId));
+      await dispatch(fetchIterations(cycleId));
+    })();
   }, [cycleId, parentCycle, dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchIterations(cycleId));
-  }, [cycleId, dispatch]);
 
   const isKeyboardOpen = useIsKeyboardOpen();
 

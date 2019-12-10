@@ -18,9 +18,10 @@ const useStyles = makeStyles(() => ({
     padding: '10px 16px 0 16px'
   },
   fields: {
+    margin: '6px',
     padding: '0 10px 0 10px',
     '&:last-child': {
-      paddingBottom: '10px'
+      paddingBottom: '0'
     }
   }
 }));

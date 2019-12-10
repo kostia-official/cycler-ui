@@ -2,7 +2,6 @@ import { api } from '../api';
 import { Dispatch } from 'redux';
 import moment from 'moment';
 import { ICyclePopulated, IIterationPopulated } from '../data.types';
-import _ from 'lodash';
 
 export enum IterationsActions {
   FetchIterationsStart = 'FetchIterationsStart',
